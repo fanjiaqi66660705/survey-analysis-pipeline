@@ -1,0 +1,63 @@
+# ============================================================
+# 问卷数据分析管线 · 变量配置文件
+# 换一份新问卷数据时，通常只需要修改本文件，无需改动 src/ 下的代码
+# ============================================================
+
+data:
+  raw_path: data/raw/sample_survey.csv   # 原始问卷数据路径
+  output_dir: outputs                     # 结果输出目录
+
+# 量表题取值范围（用于识别越界值与反向计分翻转）
+likert:
+  min: 1
+  max: 5
+
+# 反向计分题：按 (max + min - x) 自动翻转
+reverse_items: [Q3_2]
+
+# 量表维度 -> 对应题项
+scales:
+  环保态度: [Q3_1, Q3_2, Q3_3]
+  质量信任: [Q4_1, Q4_2, Q4_3]
+  购买意愿: [Q5_1, Q5_2]
+
+# 数据质量控制
+quality:
+  attention_item: Q9_attn          # 注意力检验题
+  attention_correct: 3             # 该题的正确答案
+  straightline_items: [Q3_1, Q3_2, Q3_3, Q4_1, Q4_2, Q4_3, Q5_1, Q5_2]
+  max_missing_ratio: 0.2           # 量表题缺失比例超过该值的整份问卷剔除
+
+# 描述统计
+descriptives:
+  categorical: [Q1_性别, Q2_学历, Q6_购买]
+  numeric: [Q7_年龄, Q8_月支出]
+
+# 分类变量值标签（让输出表格可读）
+value_labels:
+  Q1_性别: {1: 男, 2: 女}
+  Q2_学历: {1: 高中及以下, 2: 大专, 3: 本科, 4: 硕士及以上}
+  Q6_购买: {0: 未购买, 1: 已购买}
+
+# 交叉分析（行变量 × 列变量）
+crosstabs:
+  - row: Q2_学历
+    col: Q6_购买
+    row_label: 学历
+    col_label: 购买情况
+
+# 开放题文本分析
+open_text:
+  item: Q10_open
+  top_n: 12
+
+# 二元 Logistic 回归（因变量必须为 0/1）
+regression:
+  dependent: Q6_购买
+  predictors: [Q1_性别, Q2_学历, Q7_年龄, 环保态度, 质量信任]
+  predictor_labels:
+    Q1_性别: 性别(1=男,2=女)
+    Q2_学历: 学历(1-4)
+    Q7_年龄: 年龄
+    环保态度: 环保态度得分
+    质量信任: 质量信任得分

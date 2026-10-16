@@ -1,0 +1,12 @@
+# 以下版本为 Python 3.13 / Windows 实跑验证通过的组合（2026-10）
+# 国内网络若官方源不通，可追加：-i https://mirrors.aliyun.com/pypi/simple/
+pandas==3.0.6
+numpy==2.5.4
+scipy==1.18.1
+statsmodels==0.15.0
+matplotlib==3.11.2
+seaborn==0.13.2
+python-docx==1.2.0
+PyYAML==6.0.3
+jieba==0.42.1
+pytest==9.1.1
